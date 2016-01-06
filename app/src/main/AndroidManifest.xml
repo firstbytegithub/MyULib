@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.xuweiwei.myulib">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".app.AppActivity" />
+        <activity android:name=".layouts.LayoutsActivity" />
+        <activity android:name=".widgets.WidgetsActivity" />
+        <activity android:name=".textfield.TextFieldsActivity" />
+        <activity android:name=".containers.ContainersActivity" />
+        <activity android:name=".datetime.DateTimeActivity" />
+        <activity android:name=".expert.ExpertActivity" />
+        <activity android:name=".custom.CustomActivity" />
+        <activity android:name=".app.AppActivityActivity" />
+        <activity android:name=".app.DemoActivity" />
+        <activity android:name=".app.DemoAppCompatActivity" />
+        <activity android:name=".app.AppWindowActivity" />
+        <activity
+            android:name=".app.AppThemeActivity"
+            android:theme="@style/material" />
+        <activity
+            android:name=".app.AppTheme2Activity"
+            android:theme="@style/material2"></activity>
+        <activity android:name=".app.AppServiceActivity" />
+        <activity android:name=".app.AppContentProviderActivity" />
+        <activity android:name=".app.AppBroadCastReceiverActivity" />
+        <activity android:name=".containers.ContainerRadioGroupActivity" />
+        <activity android:name=".containers.ContainerListViewActivity" />
+        <activity android:name=".containers.ContainerGridViewActivity" />
+        <activity android:name=".containers.ContainerExpandableListViewActivity" />
+        <activity android:name=".containers.ContainerScrollViewActivity" />
+        <activity android:name=".containers.ContainerHorizontalScrollViewActivity" />
+        <activity android:name=".containers.ContainerSearchViewActivity" />
+        <activity android:name=".containers.ContainerTabHostActivity" />
+        <activity android:name=".containers.ContainerVideoViewActivity" />
+        <activity android:name=".containers.ContainerDialerFilterActivity" />
+        <activity android:name=".custom.CustomViewActivity" />
+        <activity android:name=".datetime.TextClockActivity" />
+        <activity android:name=".datetime.AnalogClockActivity" />
+        <activity android:name=".datetime.ChronometerActivity" />
+        <activity android:name=".datetime.DatePickerActivity" />
+        <activity android:name=".datetime.TimePickerActivity" />
+        <activity android:name=".datetime.CalendarViewActivity" />
+        <activity android:name=".expert.SpaceActivity" />
+        <activity android:name=".expert.CheckedTextViewActivity" />
+        <activity android:name=".expert.QuickContactBadgeActivity" />
+        <activity android:name=".expert.ExtractEditTextActivity" />
+        <activity android:name=".expert.AutoCompleteTextViewActivity" />
+        <activity android:name=".expert.MultiAutoCompleteTextViewActivity" />
+        <activity android:name=".expert.NumberPickerActivity" />
+        <activity android:name=".expert.ZoomButtonActivity" />
+        <activity android:name=".expert.ZoomControlsActivity" />
+        <activity android:name=".expert.MediaControllerActivity" />
+        <activity android:name=".expert.GestureOverlayViewActivity" />
+        <activity android:name=".expert.SurfaceViewActivity" />
+        <activity android:name=".expert.TextureViewActivity" />
+        <activity android:name=".expert.StackViewActivity" />
+        <activity android:name=".expert.ViewStubActivity" />
+        <activity android:name=".expert.ViewAnimatorActivity" />
+        <activity android:name=".expert.ViewFlipperActivity" />
+        <activity android:name=".expert.ViewSwitcherActivity" />
+        <activity android:name=".expert.ImageSwitcherActivity" />
+        <activity android:name=".expert.TextSwitcherActivity" />
+        <activity android:name=".expert.AdapterViewFlipperActivity" />
+        <activity android:name=".layouts.FrameLayoutActivity" />
+        <activity android:name=".layouts.LinearLayoutHActivity" />
+        <activity android:name=".layouts.LinearLayoutVActivity" />
+        <activity android:name=".layouts.TableLayoutActivity" />
+        <activity android:name=".layouts.TableRowActivity" />
+        <activity android:name=".layouts.GridLayoutActivity" />
+        <activity android:name=".layouts.RelativeLayoutActivity" />
+        <activity android:name=".textfield.PlainTextActivity" />
+        <activity android:name=".textfield.PersonNameActivity" />
+        <activity android:name=".textfield.EmailActivity" />
+        <activity android:name=".textfield.PhoneActivity" />
+        <activity android:name=".textfield.PostalAddressActivity" />
+        <activity android:name=".textfield.MultilineTextActivity" />
+        <activity android:name=".textfield.TimeActivity" />
+        <activity android:name=".textfield.DateActivity" />
+        <activity android:name=".textfield.NumberActivity" />
+        <activity android:name=".widgets.TextViewActivity" />
+        <activity android:name=".widgets.ButtonActivity" />
+        <activity android:name=".widgets.RadioButtonActivity" />
+        <activity android:name=".widgets.CheckBoxActivity" />
+        <activity android:name=".widgets.SwitchActivity" />
+        <activity android:name=".widgets.ToggleButtonActivity" />
+        <activity android:name=".widgets.ImageButtonActivity" />
+        <activity android:name=".widgets.ImageViewActivity" />
+        <activity android:name=".widgets.ProgressBarActivity" />
+        <activity android:name=".widgets.SeekBarActivity" />
+        <activity android:name=".widgets.RatingBarActivity" />
+        <activity android:name=".widgets.SpinnerActivity" />
+        <activity android:name=".widgets.WebViewActivity" />
+
+        <service
+            android:name=".app.AppService01"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.xuweiwei.myulib.app.ACTION01" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name=".app.DemoContentProvider"
+            android:authorities="com.example.xuweiwei"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".app.DemoBroadCastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="100">
+                <action android:name="com.example.xuweiwei.myulib.app.bc2" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".hardware.HardwareActivity" />
+        <activity android:name=".hardware.HWKeyActivity" />
+        <activity android:name=".hardware.HWDisplayActivity" />
+        <activity android:name=".hardware.HWTouchActivity" />
+        <activity android:name=".hardware.HWVibratorActivity" />
+        <activity android:name=".hardware.HWBatteryActivity" />
+        <activity android:name=".hardware.HWPowerActivity" />
+        <activity android:name=".hardware.HWBluetoothActivity" />
+        <activity android:name=".hardware.HWWifiActivity" />
+        <activity android:name=".hardware.HWEarphoneActivity" />
+        <activity android:name=".hardware.HWCameraActivity" />
+        <activity android:name=".hardware.HWStorageActivity" />
+        <activity android:name=".hardware.HWSensorsActivity" />
+        <activity android:name=".hardware.HWGPSActivity" />
+        <activity android:name=".hardware.HWFingerprintActivity" />
+        <activity android:name=".hardware.HWNFCActivity" />
+        <activity android:name=".hardware.HWUSBActivity" />
+        <activity android:name=".hardware.HWPrintActivity" />
+        <activity android:name=".hardware.AccelerometerActivity" />
+        <activity android:name=".hardware.MagneticFieldActivity" />
+        <activity android:name=".hardware.OrientationActivity" />
+        <activity android:name=".hardware.GyroscopeActivity" />
+        <activity android:name=".hardware.LightActivity" />
+        <activity android:name=".hardware.PressureActivity" />
+        <activity android:name=".hardware.TemperatureActivity" />
+        <activity android:name=".hardware.ProximityActivity" />
+        <activity android:name=".hardware.GravityActivity" />
+        <activity android:name=".hardware.LinearAccelerationActivity" />
+        <activity android:name=".hardware.RotationVectorActivity" />
+        <activity android:name=".hardware.RelativeHumidityActivity" />
+        <activity android:name=".hardware.AmbientTemperatureActivity" />
+        <activity android:name=".hardware.UncalibratedMagneticFieldActivity" />
+        <activity android:name=".hardware.UncalibratedRotationVectorActivity" />
+        <activity android:name=".hardware.UncalibratedGyroscopeActivity" />
+        <activity android:name=".hardware.SignificantMotionActivity" />
+        <activity android:name=".hardware.StepDetectorActivity" />
+        <activity android:name=".hardware.StepCounterActivity" />
+        <activity android:name=".hardware.GeoMagneticRotationVectorActivity" />
+        <activity android:name=".hardware.HeartRateActivity" />
+        <activity android:name=".hardware.TiltDetectorActivity" />
+        <activity android:name=".hardware.WakeGestureActivity" />
+        <activity android:name=".hardware.GlanceGestureActivity" />
+        <activity android:name=".hardware.PickUpActivity" />
+        <activity android:name=".software.SoftwareActivity" />
+        <activity android:name=".software.SystemInfoActivity" />
+        <activity android:name=".software.NetActivity" />
+        <activity android:name=".software.SoftTimeActivity" />
+        <activity android:name=".software.OpenGLActivity" />
+        <activity android:name=".software.TtsActivity" />
+        <activity android:name=".software.CryptoActivity" />
+        <activity android:name=".software.AudioVideoActivity" />
+        <activity android:name=".software.AppWidgetActivity" />
+        <activity android:name=".software.APKActivity" />
+        <activity android:name=".software.GestureActivity" />
+        <activity android:name=".software.WallpaperActivity" />
+        <activity android:name=".layouts.ExcelDemoActivity" />
+        <activity android:name=".layouts.Excel2DemoActivity" />
+        <activity android:name=".expert.DemoViewFlipperFragment"></activity>
+        <activity android:name=".expert.DemoSurfaceView"></activity>
+        <activity android:name=".software.DemoAnimation"></activity>
+        <activity android:name=".expert.DemoViewPager"></activity>
+        <activity android:name=".software.DemoVoice"></activity>
+        <activity android:name=".software.DemoShare"></activity>
+        <activity android:name=".expert.DemoDialog"></activity>
+        <activity
+            android:name=".app.StandActivity"
+            android:exported="true"
+            android:launchMode="standard"></activity>
+        <activity
+            android:name=".app.SingleTopActivity"
+            android:exported="true"
+            android:launchMode="singleTop"></activity>
+        <activity
+            android:name=".app.SingleTaskActivity"
+            android:exported="true"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".app.SingleInstanceActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"></activity>
+        <activity android:name=".expert.DemoListSearch"></activity>
+        <activity android:name=".software.ChooseFileActivity"></activity>
+        <activity
+            android:name=".software.NotificationActivity"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".expert.DemoAnimation"
+            android:theme="@android:style/Theme.Material.Light"></activity>
+        <activity android:name=".software.DemoVoiceRecognition"></activity>
+        <activity android:name=".software.IFlyTekSpeechRecognition"></activity>
+    </application>
+
+</manifest>
