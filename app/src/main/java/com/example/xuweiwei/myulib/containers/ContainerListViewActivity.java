@@ -33,7 +33,7 @@ public class ContainerListViewActivity extends AppCompatActivity {
     private static final String LOG_TAG = "ContainerListView";
     private ListView listView;
     private Button btn5, btn6, btn7, btn8, btn9, btn10;
-    private static final String items[] = {"111", "222", "333", "444", "555"};
+    private static final String items[] = {"111", "222", "333", "444", "555", "111", "222", "333", "444", "555", "111", "222", "333", "444", "555"};
 
     private class ViewHolder {
         public ImageView image;
@@ -69,23 +69,27 @@ public class ContainerListViewActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
+//                convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+//                holder = new ViewHolder();
+//                holder.text1 = (TextView) convertView.findViewById(android.R.id.text1);
+//                holder.text1.setText("hooo");
                 convertView = mInflater.inflate(R.layout.custom_list_item, null);
                 holder = new ViewHolder();
-                holder.image = (ImageView) convertView.findViewById(R.id.imageView);
+//                holder.image = (ImageView) convertView.findViewById(R.id.imageView);
                 holder.text1 = (TextView) convertView.findViewById(R.id.textView5);
                 holder.text2 = (TextView) convertView.findViewById(R.id.textView6);
-                holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
-                holder.image.setImageResource(R.drawable.actionbarlogo);
+//                holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
+//                holder.image.setImageResource(R.drawable.actionbarlogo);
                 holder.text1.setText("text1");
                 holder.text2.setText("text2");
-                holder.checkBox.setChecked(true);
-                holder.checkBox.setFocusable(false);
-                holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Log.d(LOG_TAG, "check change");
-                    }
-                });
+//                holder.checkBox.setChecked(true);
+//                holder.checkBox.setFocusable(false);
+//                holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                        Log.d(LOG_TAG, "check change");
+//                    }
+//                });
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
