@@ -23,6 +23,8 @@ import android.os.Environment;
 import android.speech.RecognitionListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,6 +65,14 @@ public class IFlyTekSpeechRecognition extends Activity {
     private boolean btAudio = false;
     private boolean bTTS = true;
     private SpeechSynthesizer mTts;
+
+    private boolean mIsPhoneInterrupt = false;
+
+    private static final int STATE_IDLE = 0;
+    private static final int STATE_RECORD = 1;
+    private static final int STATE_INCALL = 2;
+    private int mCurState = STATE_IDLE;
+
 
     private LexiconListener mLexiconListener = new LexiconListener() {
 
@@ -113,10 +123,8 @@ public class IFlyTekSpeechRecognition extends Activity {
                 }
             }
 
-            stopRecognizer();
-            if (btAudio) {
-                stopBluetoothSCO();
-            }
+            stopRecording();
+
             if (found) {
                 if (bTTS) {
                     tts(txt2audio.get(result));
@@ -136,11 +144,9 @@ public class IFlyTekSpeechRecognition extends Activity {
         public void onError(SpeechError speechError) {
             output("error=" + speechError.getPlainDescription(true));
 //            mIat.startListening(mRecoListener);
-            stopRecognizer();
-            if (btAudio) {
-                stopBluetoothSCO();
-            }
+            stopRecording();
             play(error_audio);
+//            startRecording();
         }
 
         @Override
@@ -149,34 +155,55 @@ public class IFlyTekSpeechRecognition extends Activity {
         }
     };
 
+    private String getStateTip(int state) {
+        switch (state) {
+            case AudioManager.SCO_AUDIO_STATE_CONNECTED:
+                return "CONNECTED";
+            case AudioManager.SCO_AUDIO_STATE_DISCONNECTED:
+                return "DISCONNECTED";
+            case AudioManager.SCO_AUDIO_STATE_CONNECTING:
+                return "CONNECTING";
+            case AudioManager.SCO_AUDIO_STATE_ERROR:
+                return "ERROR";
+        }
+
+        return null;
+    }
+
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED.equals(action)) {
                 int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
-                output("state=" + state);
+                int preState = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_PREVIOUS_STATE, -1);
+                output("state from " + getStateTip(preState) + " to " + getStateTip(state));
                 if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
                     output("sco connected");
-                    mAudioManager.setBluetoothScoOn(true);
-//                    mAudioManager.setMode(AudioManager.MODE_IN_CALL);
-                    startRecognizer();
-//                    unregisterReceiver(this);
+                    if (mCurState == STATE_INCALL) {
+                        Log.d(TAG, "in call, destroy all");
+                        stopRecording();
+                    } else {
+                        mAudioManager.setBluetoothScoOn(true);
+                        startRecognizer();
+                    }
                 } else if (state == AudioManager.SCO_AUDIO_STATE_DISCONNECTED) {
                     output("sco disconnected");
-//                    startBluetoothSCO();
-//                    if (recognizer != null) {
-//                        recognizer.cancel();
-//                        recognizer.shutdown();
-//                    }
+                    if (preState == AudioManager.SCO_AUDIO_STATE_CONNECTING) {
+                        if (mCurState == STATE_INCALL) {
+                            Log.d(TAG, "in call, don't restart all");
+                        } else if (mCurState == STATE_IDLE) {
+                            Log.d(TAG, "idle state");
+                        } else {
+                            Log.d(TAG, "restart all");
+                            stopRecording();
+                            startRecording();
+                        }
+                    }
                 } else if (state == AudioManager.SCO_AUDIO_STATE_CONNECTING) {
                     output("sco connecting");
                 } else if (state == AudioManager.SCO_AUDIO_STATE_ERROR) {
                     output("sco error");
-//                    if (recognizer != null) {
-//                        recognizer.cancel();
-//                        recognizer.shutdown();
-//                    }
                 }
             } else if (Intent.ACTION_MEDIA_BUTTON.equals(action)) {
                 KeyEvent key=(KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
@@ -195,10 +222,55 @@ public class IFlyTekSpeechRecognition extends Activity {
         }
     };
 
+//    AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+//        @Override
+//        public void onAudioFocusChange(int focusChange) {
+//            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+//                Log.d(TAG, "AUDIOFOCUS_LOSS_TRANSIENT");
+//            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+//                Log.d(TAG, "AUDIOFOCUS_LOSS");
+//            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+//                Log.d(TAG, "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+//            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+//                Log.d(TAG, "AUDIOFOCUS_GAIN");
+//            }
+//        }
+//    };
+
+    class OnePhoneStateListener extends PhoneStateListener{
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            Log.i(TAG, "[Listener]电话号码:"+incomingNumber);
+            switch(state){
+                case TelephonyManager.CALL_STATE_RINGING:
+                    Log.i(TAG, "[Listener]等待接电话:" + incomingNumber);
+                    if (mCurState == STATE_RECORD) {
+                        mCurState = STATE_INCALL;
+                        stopRecording();
+                    }
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    Log.i(TAG, "[Listener]电话挂断:"+incomingNumber);
+                    if (mCurState == STATE_INCALL) {
+                        mCurState = STATE_RECORD;
+                        startRecording();
+                    }
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    Log.i(TAG, "[Listener]通话中:"+incomingNumber);
+                    break;
+            }
+            super.onCallStateChanged(state, incomingNumber);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ifly_tek_speech_recognition);
+
+        TelephonyManager telephony = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        telephony.listen(new OnePhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
 
         if (bTTS) {
             txt2audio.put("零级", "零级加一");
@@ -269,35 +341,64 @@ public class IFlyTekSpeechRecognition extends Activity {
         mStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btAudio) {
-                    startBluetoothSCO();
-                } else {
-                    startRecognizer();
-                }
+                mCurState = STATE_RECORD;
+                startRecording();
             }
         });
+    }
+
+    private void startRecording() {
+        Log.d(TAG, "startRecording");
+        if (btAudio) {
+            startBluetoothSCO();
+        } else {
+            startRecognizer();
+        }
+    }
+
+    private void stopRecording() {
+        Log.d(TAG, "stopRecording");
+        stopRecognizer();
+        if (btAudio) {
+            stopBluetoothSCO();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopTTS();
-        stopRecognizer();
-        if (btAudio) {
-            stopBluetoothSCO();
-        }
+        stopRecording();
+        mCurState = STATE_IDLE;
         unregisterReceiver(mReceiver);
     }
 
+//    private void requestAudioFocus() {
+//        int ret = mAudioManager.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_VOICE_CALL, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE);
+//        if (ret == AudioManager.AUDIOFOCUS_REQUEST_FAILED) {
+//            Log.d(TAG, "AUDIOFOCUS_REQUEST_FAILED");
+//        } else if (ret == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+//            Log.d(TAG, "AUDIOFOCUS_REQUEST_GRANTED");
+//        }
+//    }
+//
+//    private void abandonAudioFocus() {
+//        mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
+//    }
+
     private void startBluetoothSCO() {
+        Log.d(TAG, "startBluetoothSCO +");
         mAudioManager.startBluetoothSco();
+        Log.d(TAG, "startBluetoothSCO -");
     }
 
     private void stopBluetoothSCO() {
+        Log.d(TAG, "stopBluetoothSCO +");
         if (mAudioManager.isBluetoothScoOn()) {
             mAudioManager.setBluetoothScoOn(false);
         }
         mAudioManager.stopBluetoothSco();
+        Log.d(TAG, "stopBluetoothSCO -");
     }
 
     private SynthesizerListener mTtsListener = new SynthesizerListener() {
@@ -381,7 +482,6 @@ public class IFlyTekSpeechRecognition extends Activity {
         try {
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             afd.close();
-//            mediaPlayer.setDataSource(tips.get(n));
             mediaPlayer.prepare();
             mediaPlayer.start();
             output("play tip");
@@ -390,11 +490,7 @@ public class IFlyTekSpeechRecognition extends Activity {
                 public void onCompletion(MediaPlayer mp) {
                     output("play stopped");
                     mp.release();
-                    if (btAudio) {
-                        startBluetoothSCO();
-                    } else {
-                        startRecognizer();
-                    }
+                    startRecording();
                 }
             });
         } catch (IOException e) {
