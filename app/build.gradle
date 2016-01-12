@@ -25,5 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('libs/VoiceRecognition-2.0.1.jar')
     compile files('libs/msc.jar')
-    compile files('libs/poi-3.13-20150929.jar')
+    compile files('libs/poi-3.13-20160112.jar')
 }

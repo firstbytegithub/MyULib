@@ -236,6 +236,8 @@
         <activity android:name=".software.IFlyTekSpeechRecognition" />
         <activity android:name=".software.DemoExcel" >
         </activity>
+        <activity android:name=".app.DemoMultiTask" >
+        </activity>
     </application>
 
 </manifest>

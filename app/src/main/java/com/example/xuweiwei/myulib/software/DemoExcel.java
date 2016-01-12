@@ -54,6 +54,8 @@ public class DemoExcel extends AppCompatActivity {
                         } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
                             s = String.valueOf(cell.getNumericCellValue());
                         } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                            String form = cell.getCellFormula();
+                            Log.d(TAG, "form=" + form);
                             CellValue cellValue = evaluator.evaluate(cell);
                             switch (cellValue.getCellType()) {
                                 case Cell.CELL_TYPE_BOOLEAN:

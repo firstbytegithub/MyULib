@@ -25,8 +25,9 @@ public class AppActivity extends AppCompatActivity
             "Window", // demo show/hide statusbar/navi/fullscreen
             "Theme",
             "Theme2",
-            "System" // get camera shot/open file manager/device manager/dial/sens sms,
+            // get camera shot/open file manager/device manager/dial/sens sms,
             // mms,email/open web page/play audio,video/open galaeryy/open contact ......
+            "Multitask"
     };
 
     @Override
@@ -68,6 +69,9 @@ public class AppActivity extends AppCompatActivity
                 break;
             case 6:
                 intent = new Intent(this, AppTheme2Activity.class);
+                break;
+            case 7:
+                intent = new Intent(this, DemoMultiTask.class);
                 break;
         }
 
