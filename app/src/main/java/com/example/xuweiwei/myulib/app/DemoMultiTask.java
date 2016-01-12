@@ -41,7 +41,9 @@ public class DemoMultiTask extends Activity {
         private Looper mLooper = null;
 
         public void exit() {
-            mLooper.quit();
+            if (mLooper != null) {
+                mLooper.quit();
+            }
         }
 
         public void run() {
